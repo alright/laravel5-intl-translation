@@ -1,5 +1,5 @@
 {
-    "name": "skysplit/laravel5-intl-translation",
+    "name": "alright/laravel5-intl-translation",
     "type": "library",
     "license": "MIT",
     "description": "Laravel 5 package for better translation syntax using php-intl extension",
@@ -13,6 +13,11 @@
         {
             "name": "Tomasz Romik",
             "email": "manetamajster@gmail.com"
+        },
+        
+        {
+            "name": "Evgeny Alright",
+            "email": "mail@alrightus.com"
         }
     ],
     "autoload": {
