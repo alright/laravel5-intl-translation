@@ -7,9 +7,9 @@ use MessageFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Translation\LoaderInterface;
 use Illuminate\Support\NamespacedItemResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
-class Translator extends NamespacedItemResolver implements TranslatorInterface
+class Translator extends NamespacedItemResolver implements TranslatorContract
 {
 
     /**
@@ -117,6 +117,40 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     }
 
     /**
+     * Get the translation for a given key from the JSON translation files.
+     *
+     * @param  string  $key
+     * @param  array  $replace
+     * @param  string  $locale
+     * @return string
+     */
+    public function getFromJson($key, array $replace = [], $locale = null)
+    {
+        $locale = $locale ?: $this->locale;
+
+        // For JSON translations, there is only one file per locale, so we will simply load
+        // that file and then we will be ready to check the array for the key. These are
+        // only one level deep so we do not need to do any fancy searching through it.
+        $this->load('*', '*', $locale);
+
+        $line = isset($this->loaded['*']['*'][$locale][$key])
+            ? $this->loaded['*']['*'][$locale][$key] : null;
+
+        // If we can't find a translation for the JSON key, we will attempt to translate it
+        // using the typical translation file. This way developers can always just use a
+        // helper such as __ instead of having to pick between trans or __ with views.
+        if (! isset($line)) {
+            $fallback = $this->get($key, $replace, $locale);
+
+            if ($fallback !== $key) {
+                return $fallback;
+            }
+        }
+
+        return $this->makeReplacements($line ?: $key, $replace);
+    }
+
+    /**
      * Retrieve a language line out the loaded array.
      *
      * @param  string  $namespace
@@ -135,10 +169,39 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     }
 
     /**
+     * TODO: not finished
+     * Make the place-holder replacements on a line.
+     *
+     * @param  string  $line
+     * @param  array   $replace
+     * @return string
+     */
+    protected function makeReplacements($line, array $replace)
+    {
+        dd($line, $replace);
+
+        if (empty($replace)) {
+            return $line;
+        }
+
+        $replace = $this->sortReplacements($replace);
+
+        foreach ($replace as $key => $value) {
+            $line = str_replace(
+                [':'.$key, ':'.Str::upper($key), ':'.Str::ucfirst($key)],
+                [$value, Str::upper($value), Str::ucfirst($value)],
+                $line
+            );
+        }
+
+        return $line;
+    }
+
+    /**
      * Formats message using php MessageFormatter::formatMessage method
      *
      * @param string $locale
-     * @param stirng $message
+     * @param string $message
      * @param array $parameters
      * @return string
      */
