@@ -178,8 +178,6 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      */
     protected function makeReplacements($line, array $replace)
     {
-        dd($line, $replace);
-
         if (empty($replace)) {
             return $line;
         }
