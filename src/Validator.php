@@ -8,6 +8,9 @@ use Illuminate\Validation\Validator as LaravelValidator;
 
 class Validator extends LaravelValidator
 {
+    use \Illuminate\Validation\Concerns\FormatsMessages,
+        \Illuminate\Validation\Concerns\ValidatesAttributes;
+
     /**
      * {@inheritdoc}
      */
@@ -22,35 +25,35 @@ class Validator extends LaravelValidator
     /**
      * {@inheritdoc}
      */
-    protected function getMessage($attribute, $rule)
-    {
-        $lowerRule = Str::snake($rule);
-        $inlineMessage = $this->getInlineMessage($attribute, $lowerRule);
-
-        if (! is_null($inlineMessage)) {
-            return $inlineMessage;
-        }
-
-        $customKey = "validation.custom.{$attribute}.{$lowerRule}";
-
-        $customMessage = $this->getCustomMessageFromTranslator($customKey);
-
-        if ($customMessage !== $customKey) {
-            return $customMessage;
-        }
-
-        if (in_array($rule, $this->sizeRules)) {
-            return $this->getSizeMessage($attribute, $rule);
-        }
-
-        $key = "validation.{$lowerRule}";
-
-        if ($this->translator->has($key)) {
-            return $this->translator->get($key);
-        }
-
-        return $this->getInlineMessage($attribute, $lowerRule, $this->fallbackMessages) ?: $key;
-    }
+//    protected function getMessage($attribute, $rule)
+//    {
+//        $lowerRule = Str::snake($rule);
+//        $inlineMessage = $this->getInlineMessage($attribute, $lowerRule);
+//
+//        if (! is_null($inlineMessage)) {
+//            return $inlineMessage;
+//        }
+//
+//        $customKey = "validation.custom.{$attribute}.{$lowerRule}";
+//
+//        $customMessage = $this->getCustomMessageFromTranslator($customKey);
+//
+//        if ($customMessage !== $customKey) {
+//            return $customMessage;
+//        }
+//
+//        if (in_array($rule, $this->sizeRules)) {
+//            return $this->getSizeMessage($attribute, $rule);
+//        }
+//
+//        $key = "validation.{$lowerRule}";
+//
+//        if ($this->translator->has($key)) {
+//            return $this->translator->get($key);
+//        }
+//
+//        return $this->getInlineMessage($attribute, $lowerRule, $this->fallbackMessages) ?: $key;
+//    }
 
     /**
      * {@inheritdoc}
