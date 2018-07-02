@@ -5,7 +5,7 @@ namespace Skysplit\Laravel\Translation;
 use Countable;
 use MessageFormatter;
 use Illuminate\Support\Arr;
-use Illuminate\Translation\LoaderInterface;
+use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 
@@ -15,7 +15,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     /**
      * The loader implementation.
      *
-     * @var \Illuminate\Translation\LoaderInterface
+     * @var Illuminate\Contracts\Translation\Loader
      */
     protected $loader;
 
@@ -50,11 +50,11 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     /**
      * Create a new translator instance.
      *
-     * @param  \Illuminate\Translation\LoaderInterface  $loader
+     * @param  Illuminate\Contracts\Translation\Loader  $loader
      * @param  string  $locale
      * @return void
      */
-    public function __construct(LoaderInterface $loader, $locale)
+    public function __construct(Loader $loader, $locale)
     {
         $this->loader = $loader;
         $this->setLocale($locale);
