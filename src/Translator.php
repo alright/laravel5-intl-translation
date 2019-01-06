@@ -2,12 +2,16 @@
 
 namespace Skysplit\Laravel\Translation;
 
+
 use Countable;
-use MessageFormatter;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
+use MessageFormatter;
 
 class Translator extends NamespacedItemResolver implements TranslatorContract
 {
@@ -193,6 +197,19 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         }
 
         return $line;
+    }
+
+    /**
+     * Sort the replacements array.
+     *
+     * @param  array  $replace
+     * @return array
+     */
+    protected function sortReplacements(array $replace)
+    {
+        return (new Collection($replace))->sortBy(function ($value, $key) {
+            return mb_strlen($key) * -1;
+        })->all();
     }
 
     /**
