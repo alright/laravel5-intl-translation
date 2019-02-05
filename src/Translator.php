@@ -216,6 +216,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         }
 
         $replace['count'] = $number;
+        $replace['n'] = $number;
 
         return $this->makeReplacements(
             $this->getSelector()->choose($line, $number, $locale), $replace
