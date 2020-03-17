@@ -94,7 +94,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      */
     public function has($key, $locale = null, $fallback = true)
     {
-        return $this->get($key, [], $locale, $fallback) !== $key;
+        return $this->_get($key, [], $locale, $fallback) !== $key;
     }
 
     /**
@@ -105,9 +105,9 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $locale
      * @return string|array
      */
-    public function trans($key, array $replace = [], $locale = null)
+    public function get($key, array $replace = [], $locale = null)
     {
-        return $this->formatMessage($locale, $this->get($key, [], $locale), $replace);
+        return $this->formatMessage($locale, $this->_get($key, [], $locale), $replace);
     }
 
     /**
@@ -118,7 +118,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  bool  $fallback
      * @return string|array
      */
-    public function get($key, array $replace = [], $locale = null, $fallback = true)
+    public function _get($key, array $replace = [], $locale = null, $fallback = true)
     {
         [$namespace, $group, $item] = $this->parseKey($key);
 
@@ -169,7 +169,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // using the typical translation file. This way developers can always just use a
         // helper such as __ instead of having to pick between trans or __ with views.
         if (! isset($line)) {
-            $fallback = $this->trans($key, $replace, $locale);
+            $fallback = $this->get($key, $replace, $locale);
 
             if ($fallback !== $key) {
                 return $fallback;
@@ -188,23 +188,9 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $locale
      * @return string
      */
-    public function transChoice($key, $number, array $replace = [], $locale = null)
-    {
-        return $this->choice($key, $number, $replace, $locale);
-    }
-
-    /**
-     * Get a translation according to an integer value.
-     *
-     * @param  string  $key
-     * @param  int|array|\Countable  $number
-     * @param  array   $replace
-     * @param  string  $locale
-     * @return string
-     */
     public function choice($key, $number, array $replace = [], $locale = null)
     {
-        $line = $this->get(
+        $line = $this->_get(
             $key, $replace, $locale = $this->localeForChoice($locale)
         );
 
@@ -218,7 +204,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         $replace['count'] = $number;
         $replace['n'] = $number;
 
-        return $this->trans($key, $replace, $locale);
+        return $this->get($key, $replace, $locale);
     }
 
     /**
