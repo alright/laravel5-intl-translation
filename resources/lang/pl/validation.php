@@ -109,8 +109,8 @@ return [
     */
 
     'attributes' => [
-        'password' => "hasło",
-        'email' => "adres e-mail"
+        'password' => 'hasło',
+        'email'    => 'adres e-mail',
     ],
 
 ];

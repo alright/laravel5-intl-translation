@@ -5,7 +5,6 @@ use Skysplit\Laravel\Translation\ValidationServiceProvider;
 
 class TestCase extends Orchestra\Testbench\TestCase
 {
-
     /**
      * @var string|null
      */
@@ -14,20 +13,20 @@ class TestCase extends Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
-        
-        $this->fixturesPath = __DIR__ . '/fixtures/files';
+
+        $this->fixturesPath = __DIR__.'/fixtures/files';
     }
 
     protected function getEnvironmentSetUp($app)
     {
         // Setup locale
         $app['config']->set('locale', 'en');
-        
+
         // Set lang files path
-        $app['path.lang'] = __DIR__ . '/../resources/lang';
-        
+        $app['path.lang'] = __DIR__.'/../resources/lang';
+
         // Reset app base path, as it is set to orchestra vendor directory
-        $app['path.base'] = __DIR__ . '/../src';
+        $app['path.base'] = __DIR__.'/../src';
     }
 
     protected function getPackageProviders($app)
@@ -38,5 +37,4 @@ class TestCase extends Orchestra\Testbench\TestCase
             ValidationServiceProvider::class,
         ];
     }
-
 }

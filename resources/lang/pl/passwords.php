@@ -1,6 +1,7 @@
 <?php
+
 return [
-    
+
     /*
     |--------------------------------------------------------------------------
     | Password Reminder Language Lines
@@ -11,7 +12,7 @@ return [
     | has failed, such as for an invalid token or invalid new password.
     |
     */
-    
+
     'password' => 'Hasło musi mieć przynajmniej sześć znaków i zgadzać się z potwierdzeniem.',
     'reset'    => 'Hasło zostało zresetowane!',
     'sent'     => 'Przypomnienie hasła zostało wysłane!',

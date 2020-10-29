@@ -4,14 +4,13 @@ use test\Models\User;
 
 class TranslationDatabaseTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--realpath' => realpath(__DIR__ . '/database/migrations'),
+            '--realpath' => realpath(__DIR__.'/database/migrations'),
         ]);
     }
 
@@ -21,14 +20,14 @@ class TranslationDatabaseTest extends TestCase
 
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => ''
+            'prefix'   => '',
         ]);
     }
 
     /**
-     * Create test user
+     * Create test user.
      *
      * @return User
      */
@@ -60,5 +59,4 @@ class TranslationDatabaseTest extends TestCase
         $this->assertEquals('The selected exists is invalid.', $errors->first('exists'));
         $this->assertEquals('The unique has already been taken.', $errors->first('unique'));
     }
-
 }

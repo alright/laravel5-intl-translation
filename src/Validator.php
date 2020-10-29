@@ -2,14 +2,14 @@
 
 namespace Skysplit\Laravel\Translation;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Validator as LaravelValidator;
 
 class Validator extends LaravelValidator
 {
-    use \Illuminate\Validation\Concerns\FormatsMessages,
-        \Illuminate\Validation\Concerns\ValidatesAttributes;
+    use \Illuminate\Validation\Concerns\FormatsMessages;
+    use \Illuminate\Validation\Concerns\ValidatesAttributes;
 
     /**
      * {@inheritdoc}
@@ -231,7 +231,7 @@ class Validator extends LaravelValidator
     protected function replaceRequiredUnless($message, $attribute, $rule, $parameters)
     {
         return [
-            'other' => $this->getAttribute(array_shift($parameters)),
+            'other'  => $this->getAttribute(array_shift($parameters)),
             'values' => implode(', ', $parameters),
         ];
     }
